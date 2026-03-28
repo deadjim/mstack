@@ -1,15 +1,20 @@
 ---
 name: mlaunch
-version: 0.1.0
+version: 0.2.0
 description: |
-  Generate a complete launch campaign from your repo. Reads README, CHANGELOG,
-  and brand voice to produce landing page copy, email announcement, social posts,
-  and ad copy in one command.
+  Generate 3 positioning hypotheses from synthetic user research — not just your
+  README. Scrapes Reddit, HN, G2/Trustpilot, and competitor pages to find real
+  human language before writing a word of copy.
 ---
 
 # /mlaunch
 
-Generate a complete launch kit from your repo in under 60 seconds.
+Most launch copy fails because it's written from the founder's perspective, not the
+user's. /mlaunch fixes that by doing synthetic user research before generating anything.
+
+The output is not one polished campaign. It's 3 cheap positioning hypotheses with
+meaningfully different ICPs, pain hooks, and wedges — ready to test in parallel.
+Let data pick the winner before you scale.
 
 ## Preamble
 
@@ -18,169 +23,273 @@ _BRAND_REPO="marketing/BRAND.md"
 _BRAND_GLOBAL="$HOME/.mstack/BRAND.md"
 _README="README.md"
 _CHANGELOG="CHANGELOG.md"
-_OUT="marketing/launch/$(date +%Y-%m-%d)"
+_DATE=$(date +%Y-%m-%d)
+_OUT="marketing/launch/$_DATE"
 mkdir -p "$_OUT"
 echo "Output dir: $_OUT"
 
-# Detect brand voice source
-if [ -f "$_BRAND_REPO" ]; then
-  echo "BRAND: repo (marketing/BRAND.md)"
-elif [ -f "$_BRAND_GLOBAL" ]; then
-  echo "BRAND: global (~/.mstack/BRAND.md)"
-else
-  echo "BRAND: none (will infer)"
-fi
+[ -f "$_BRAND_REPO" ] && echo "BRAND: repo" || { [ -f "$_BRAND_GLOBAL" ] && echo "BRAND: global" || echo "BRAND: none"; }
+[ -f "$_README" ] && echo "README: found ($(wc -w < $_README) words)" || echo "README: missing"
 
-# Detect context sources
-[ -f "$_README" ] && echo "README: found" || echo "README: missing"
-[ -f "$_CHANGELOG" ] && echo "CHANGELOG: found" || echo "CHANGELOG: missing"
+# Check browse binary for research phase
+B=""
+[ -x "$HOME/.claude/skills/gstack/browse/dist/browse" ] && B="$HOME/.claude/skills/gstack/browse/dist/browse"
+[ -n "$B" ] && echo "BROWSE: ready" || echo "BROWSE: unavailable (research phase will use WebSearch fallback)"
 ```
 
-## Input Resolution
+## Phase 1: Product Context
 
-Gather context in this order:
+Gather what you know about the product:
 
-1. **Inline arg:** If the user ran `/mlaunch "description here"`, use that as the
-   primary product description. Skip README extraction for description.
+1. **README.md** — product name (H1), description (first paragraph), target user
+   (section with "who", "for", "audience"), key features. Max 8KB.
+2. **CHANGELOG.md** — first version entry only. Max 2KB.
+3. **Tech stack** — `package.json`, `go.mod`, `pyproject.toml`. One line.
+4. **Inline arg** — `/mlaunch "description"` overrides README description.
+5. **Interactive fallback** — if README < 50 words and no inline arg, ask:
+   "What does your product do, and who is it for?"
 
-2. **README.md:** Read up to 8KB.
-   - Product name: the H1 heading
-   - Description: first paragraph after H1
-   - Target user: content under a heading containing "who", "for", or "audience"
-   - If README missing or < 50 words: proceed to interactive fallback
+Extract and state clearly:
+- Product name
+- One-sentence description of what it does
+- Who it's for (best guess from README — this will be challenged in Phase 2)
+- 3-5 key features or facts
+- What it costs or how it's distributed
 
-3. **CHANGELOG.md:** Read the first version entry only (content until the second
-   `## [` or EOF). Max 2KB. This is "what's new."
+## Phase 2: Synthetic User Research
 
-4. **Tech stack:** Check for `package.json` (read `name` + `description` fields),
-   `go.mod` (module name), `pyproject.toml` (name + description). One line of
-   context max.
+**Goal:** Find how real people describe this problem in their own words — before
+you describe your solution in yours.
 
-5. **BRAND.md:** If found (repo > global), prepend to prompt as voice constraints.
+Run the following searches. Use WebSearch (or `$B goto` + `$B text` if browse is
+available for richer scraping). Adapt search terms to the actual product.
 
-6. **Interactive fallback** (if README missing or < 50 words and no inline arg):
-   Ask ONE question: "What does your product do, and who is it for?" Wait for
-   the answer before proceeding.
+### 2a. Reddit — problem language
 
-## Generation
+Search: `site:reddit.com "[problem space]" frustration OR "wish there was" OR "how do you"`
 
-Using the gathered context, generate all four assets now. You are the copywriter.
+Read the top 3-5 results. Extract:
+- Exact phrases people use to describe the pain (quote them)
+- What workarounds they're using
+- What they've tried and why it failed
+- Emotional language: frustration, embarrassment, wasted time, cost
 
-**Voice and tone:**
-- Write like a founder talking to a peer, not a marketer talking to a prospect
-- Specific beats vague. If the README says "reduces build time by 40%", use that number.
-  If there's no number, find the most concrete fact available.
-- Short sentences. Active voice. No throat-clearing.
-- Banned words (replace if generated): unlock, revolutionize, game-changer, powerful,
-  seamless, robust, comprehensive, leverage, synergy, cutting-edge, innovative,
-  streamline, empower, transformative
+### 2b. HN — technical buyer language
 
-**Rules per asset:**
-- Twitter/X posts: each tweet ≤280 characters, no emojis unless brand uses them
-- Headlines: ≤10 words, start with a verb or the product name
-- Email subjects: ≤50 characters, no ALL CAPS, no clickbait ("You won't believe...")
-- Google headlines: ≤30 characters each (count carefully)
-- Meta primary text: ≤125 characters
+Search: `site:news.ycombinator.com "Ask HN" [problem space]`
 
-**Grounding rule:** At least one specific number, feature name, or concrete fact from
-the repo context must appear somewhere in each output file. If the context is thin,
-use the product name and what it does — not generic benefits.
+Read the top 2-3 threads. Extract:
+- How technical users frame the problem
+- What solutions they've evaluated and rejected
+- Price sensitivity signals
+- "I wish X would just..." statements
 
-Generate all four files now, following the output formats below exactly.
+### 2c. Competitor reviews — G2 / Trustpilot / App Store
 
-## Output
+Identify 1-2 closest competitors from the product context. Search:
+`site:g2.com "[competitor]" reviews` or `site:trustpilot.com "[competitor]"`
 
-Write four files to `marketing/launch/{YYYY-MM-DD}/`:
+Extract:
+- 1-star and 2-star reviews: what breaks, what's missing, what's overpriced
+- 5-star reviews: what they love (this is what you must match or beat)
+- Exact phrases that appear in multiple reviews (these are resonant)
 
-**hero.md** — landing page copy
+### 2d. Job postings — operational pain
+
+Search: `"[job title most likely to buy this]" job posting [related workflow]`
+
+Extract:
+- How companies describe the problem in hiring language
+- What skills/tools they list (reveals the current status quo)
+- What outcomes they promise to whoever solves it
+
+### 2e. Competitor landing pages — what's been said to death
+
+Visit 1-2 competitor homepages. Extract:
+- Their headline and subheadline (this is what's already been said)
+- Their top 3 claimed benefits
+- Their CTA
+
+**The gap is your wedge.** If every competitor says "save time," you don't say
+"save time." You find what they're not saying.
+
+### Research synthesis
+
+After gathering, produce a **Research Brief** written to `marketing/launch/{date}/RESEARCH.md`:
+
+```markdown
+# Research Brief — [Product Name] — [Date]
+
+## Real user language (direct quotes)
+- "[quote from Reddit/HN/review]" — source
+- "[quote]" — source
+...
+
+## Current workarounds
+- [what people do today instead]
+
+## Competitor positioning (what's already been said)
+- [Competitor 1]: "[their headline]" — claims: [list]
+- [Competitor 2]: "[their headline]" — claims: [list]
+
+## The gap
+[1-2 sentences: what every competitor says vs. what nobody is saying]
+
+## Resonant phrases to steal (use verbatim or close)
+- "[phrase from reviews/Reddit]"
+- "[phrase]"
+
+## Signals about who hurts most
+[Which segment of potential users expressed the most acute pain? Quote evidence.]
 ```
-# [Headline — ≤10 words]
-## [Subheadline — one sentence, what it does and for whom]
 
-### [Feature 1 — 3 words max]
-[One sentence description]
+## Phase 3: 3 Positioning Hypotheses
 
-### [Feature 2]
-[One sentence]
+Using the research brief, generate 3 meaningfully different campaign directions.
+These are not variations of the same campaign — they bet on different things.
 
-### [Feature 3]
-[One sentence]
+**Each hypothesis must differ on at least 2 of these axes:**
+- ICP (who is it for — be specific: "ops manager at 20-person SaaS" not "businesses")
+- Primary pain (speed vs. cost vs. embarrassment vs. reliability vs. status)
+- Wedge (what makes this different from the thing they're already using)
+- Hook (the single sentence that earns the next sentence)
 
-**[CTA button text]** — [URL placeholder]
-```
+For each hypothesis, write to `marketing/launch/{date}/hypothesis-[A|B|C].md`:
 
-**announcement.md** — email announcement
-```
-Subject: [Option 1]
-Subject: [Option 2]
-Subject: [Option 3]
-Preview: [Preview text, ≤90 chars]
+```markdown
+# Hypothesis [A|B|C]: [Name — 3 words describing the bet]
+
+## The bet
+ICP: [Specific person — title, company size, context]
+Primary pain: [One pain, stated as the user would state it]
+Wedge: [Why this, why now, vs. what they're doing today]
+Hook: [The single opening line that earns the next]
+
+## Confidence level: [Low|Medium|High]
+## Evidence from research: [1-2 quotes or signals that support this bet]
+## What would prove this wrong: [Falsifiable signal]
 
 ---
 
-[Email body — 150-200 words, conversational, ends with single CTA]
+## Hero copy
+### [Headline — ≤10 words, active voice, no banned words]
+#### [Subheadline — one sentence]
+
+**[Feature 1 — 3 words]**
+[One sentence]
+
+**[Feature 2]**
+[One sentence]
+
+**[Feature 3]**
+[One sentence]
+
+**[CTA]** — [URL placeholder]
+
+---
+
+## Email subject lines (3 variants)
+- Subject: [≤50 chars]
+- Subject: [≤50 chars]
+- Subject: [≤50 chars]
+Preview: [≤90 chars]
+
+---
+
+## Tweet hook
+[Single tweet ≤280 chars — the one you'd post to test this positioning]
+
+---
+
+## How to test this hypothesis cheap
+[Specific: post to which subreddit, which HN thread to comment on, which
+community to share in, what ad to run at $5/day and what click = signal]
 ```
 
-**social.md** — social posts
+**Banned words across all copy:** unlock, revolutionize, game-changer, powerful,
+seamless, robust, comprehensive, leverage, synergy, cutting-edge, innovative,
+streamline, empower, transformative, excited to announce, proud to share.
+
+**Grounding rule:** Every hypothesis must use at least one phrase lifted directly
+from the research (quotes from users, reviews, or job postings). Real language
+beats founder language every time.
+
+## Phase 4: Assumption Log
+
+Write `marketing/launch/{date}/ASSUMPTIONS.md`:
+
+```markdown
+# Marketing Assumptions — [Product Name] — [Date]
+
+These are the beliefs this launch is betting on. /mretro will score each one
+after you have data.
+
+## ICP assumptions
+- [ ] **A1:** [Specific belief about who the primary buyer is]
+      Evidence: [what made us think this]
+      Test: [what signal would confirm or deny]
+
+- [ ] **A2:** [Another ICP belief]
+      ...
+
+## Pain assumptions
+- [ ] **B1:** [Belief about what pain matters most]
+      Evidence:
+      Test:
+
+- [ ] **B2:** ...
+
+## Channel assumptions
+- [ ] **C1:** [Where this person hangs out / how they discover tools]
+      Evidence:
+      Test:
+
+## Pricing/conversion assumptions
+- [ ] **D1:** [Belief about willingness to pay or convert]
+      Evidence:
+      Test:
+
+## Competitive assumptions
+- [ ] **E1:** [Belief about why they'd switch from current solution]
+      Evidence:
+      Test:
+
+---
+*Scored by /mretro after launch. Update each assumption with: CONFIRMED /
+REFUTED / UNCLEAR + evidence.*
 ```
-## Twitter/X Thread
-1/ [Tweet 1 — the hook]
-2/ [Tweet 2 — the problem]
-3/ [Tweet 3 — the solution]
-4/ [Tweet 4 — the proof/feature]
-5/ [Tweet 5 — the CTA]
 
-## LinkedIn
-[150-200 word post, professional but not corporate]
+## Phase 5: Quality Gates
 
-## Hacker News (Show HN)
-Show HN: [Product name] — [one-line description]
-[2-3 sentences: what it is, who built it, why now]
-```
-
-**ads.md** — ad copy
-```
-## Google Search Ads
-Headline 1: [≤30 chars]
-Headline 2: [≤30 chars]
-Description: [≤90 chars]
-
-Headline 1: [variant 2]
-Headline 2: [variant 2]
-Description: [variant 2]
-
-## Meta/Social Ads
-Primary text: [≤125 chars]
-Headline: [≤40 chars]
-
-Primary text: [variant 2]
-Headline: [variant 2]
-```
-
-## Quality Check
-
-After writing files, verify each against quality gates:
-- [ ] No banned words in any file
-- [ ] All Twitter posts ≤280 chars
-- [ ] All Google headlines ≤30 chars
+Check all hypothesis files:
+- [ ] No banned words
+- [ ] All tweet hooks ≤280 chars
 - [ ] All email subjects ≤50 chars
-- [ ] At least one number or specific fact appears across the output
+- [ ] All headlines ≤10 words
+- [ ] Each hypothesis uses ≥1 direct quote or phrase from research
+- [ ] Each hypothesis has a falsifiable "what would prove this wrong" statement
+- [ ] ASSUMPTIONS.md has ≥5 assumptions with tests defined
 
-If a gate fails: fix inline without re-calling Claude (simple word substitution
-or length trim). If a fix would change meaning, flag it to the user.
+Fix inline if possible. Flag to user if a fix would change meaning.
 
 ## Completion
 
 ```bash
 echo ""
-echo "✦ Launch kit ready: $_OUT"
-echo "  hero.md          — landing page copy"
-echo "  announcement.md  — email announcement (3 subject variants)"
-echo "  social.md        — Twitter thread, LinkedIn, HN Show HH"
-echo "  ads.md           — Google + Meta ad copy"
+echo "✦ /mlaunch complete: $_OUT"
 echo ""
-echo "Next: review and edit, then /mretro after your launch to capture what worked."
+echo "  RESEARCH.md          — synthetic user research brief"
+echo "  hypothesis-A.md      — positioning bet A"
+echo "  hypothesis-B.md      — positioning bet B"
+echo "  hypothesis-C.md      — positioning bet C"
+echo "  ASSUMPTIONS.md       — what this launch is betting on"
+echo ""
+echo "Next: pick one hypothesis to test first, or run all 3 cheap in parallel."
+echo "Run /mretro after 2 weeks to score your assumptions."
 ```
 
-Report: DONE if all 4 files written and quality gates passed.
-Report: DONE_WITH_CONCERNS if any quality gate had to be manually fixed.
+**This is not a launch. It's a test.** The goal is to learn which hypothesis
+resonates before spending real money or reputation on any of them.
+
+Report: DONE if all 5 files written and quality gates passed.
+Report: DONE_WITH_CONCERNS if research phase was limited (search unavailable, etc.)
