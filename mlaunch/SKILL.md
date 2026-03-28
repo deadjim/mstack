@@ -64,17 +64,29 @@ Gather context in this order:
 
 ## Generation
 
-With the gathered context, call Claude once with a prompt that produces all four
-output files in a single structured response. Request JSON output with these keys:
-`hero`, `announcement`, `social`, `ads`.
+Using the gathered context, generate all four assets now. You are the copywriter.
 
-**Quality constraints to include in the prompt:**
-- No AI clichés: unlock, revolutionize, game-changer, powerful, seamless,
-  robust, comprehensive
-- Twitter/X posts: ≤280 characters each
-- Headlines: ≤10 words, active voice
-- At least one specific number or concrete fact per asset (from context)
-- Email subject lines: ≤50 characters, no clickbait
+**Voice and tone:**
+- Write like a founder talking to a peer, not a marketer talking to a prospect
+- Specific beats vague. If the README says "reduces build time by 40%", use that number.
+  If there's no number, find the most concrete fact available.
+- Short sentences. Active voice. No throat-clearing.
+- Banned words (replace if generated): unlock, revolutionize, game-changer, powerful,
+  seamless, robust, comprehensive, leverage, synergy, cutting-edge, innovative,
+  streamline, empower, transformative
+
+**Rules per asset:**
+- Twitter/X posts: each tweet ≤280 characters, no emojis unless brand uses them
+- Headlines: ≤10 words, start with a verb or the product name
+- Email subjects: ≤50 characters, no ALL CAPS, no clickbait ("You won't believe...")
+- Google headlines: ≤30 characters each (count carefully)
+- Meta primary text: ≤125 characters
+
+**Grounding rule:** At least one specific number, feature name, or concrete fact from
+the repo context must appear somewhere in each output file. If the context is thin,
+use the product name and what it does — not generic benefits.
+
+Generate all four files now, following the output formats below exactly.
 
 ## Output
 
