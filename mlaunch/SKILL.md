@@ -1,10 +1,11 @@
 ---
 name: mlaunch
-version: 0.2.0
+version: 0.3.0
 description: |
   Generate 3 positioning hypotheses from synthetic user research — not just your
-  README. Scrapes Reddit, HN, G2/Trustpilot, and competitor pages to find real
-  human language before writing a word of copy.
+  README. Reads /mdiscover output if it exists, otherwise scrapes Reddit, HN,
+  G2/Trustpilot, and competitor pages. Each hypothesis is stress-tested by a
+  skeptic agent before output.
 ---
 
 # /mlaunch
@@ -35,6 +36,18 @@ echo "Output dir: $_OUT"
 B=""
 [ -x "$HOME/.claude/skills/gstack/browse/dist/browse" ] && B="$HOME/.claude/skills/gstack/browse/dist/browse"
 [ -n "$B" ] && echo "BROWSE: ready" || echo "BROWSE: unavailable (research phase will use WebSearch fallback)"
+
+# Check for existing /mdiscover output
+DISCOVERY_DIR=$(ls -td marketing/discovery/*/ 2>/dev/null | head -1)
+DISCOVERY_FILE=""
+if [ -n "$DISCOVERY_DIR" ] && [ -f "${DISCOVERY_DIR}RESEARCH.md" ]; then
+  DISCOVERY_FILE="${DISCOVERY_DIR}RESEARCH.md"
+  DISCOVERY_AGE=$(( ( $(date +%s) - $(date -r "$DISCOVERY_DIR" +%s 2>/dev/null || echo $(date +%s)) ) / 86400 ))
+  echo "DISCOVERY: $DISCOVERY_FILE ($DISCOVERY_AGE days old)"
+  [ "$DISCOVERY_AGE" -lt 14 ] && echo "DISCOVERY_STATUS: fresh" || echo "DISCOVERY_STATUS: stale (>14 days)"
+else
+  echo "DISCOVERY: none"
+fi
 ```
 
 ## Phase 1: Product Context
@@ -60,6 +73,16 @@ Extract and state clearly:
 
 **Goal:** Find how real people describe this problem in their own words — before
 you describe your solution in yours.
+
+**If `DISCOVERY_FILE` is set and `DISCOVERY_STATUS` is `fresh`:** Read the
+discovery brief at `$DISCOVERY_FILE` and use it as your research basis. Skip
+the searches below. Extract the same fields (user language, workarounds,
+competitor positioning, the gap, resonant phrases, who hurts most) from the
+existing brief. Note: "Research from /mdiscover ({date})" at the top of
+`RESEARCH.md` in the launch output.
+
+**If `DISCOVERY_FILE` is missing or stale:** Run all searches below, then
+suggest running `/mdiscover` separately to cache this research for future runs.
 
 Run the following searches. Use WebSearch (or `$B goto` + `$B text` if browse is
 available for richer scraping). Adapt search terms to the actual product.
@@ -213,6 +236,51 @@ streamline, empower, transformative, excited to announce, proud to share.
 **Grounding rule:** Every hypothesis must use at least one phrase lifted directly
 from the research (quotes from users, reviews, or job postings). Real language
 beats founder language every time.
+
+## Phase 3.5: Skeptic Review
+
+**Do not skip this phase.** All three hypotheses just came from someone building
+the product. That person is optimistic. Fix that before output.
+
+For each hypothesis, spawn a subagent with this exact framing:
+
+---
+*You are a skeptical early adopter who has seen 500 product launches and ignored
+490 of them. You are not trying to be nice. You are trying to prevent another
+product from dying in obscurity because it was marketed to the wrong person
+with the wrong message.*
+
+*Review this positioning hypothesis. Answer these 4 questions:*
+
+*1. Who would actually ignore this? (Not the ICP — who is this written for in
+reality, and why would they scroll past?)*
+
+*2. What's the weakest claim here? (The one a jaded buyer spots immediately as
+BS or heard-it-before?)*
+
+*3. What's missing that would make this credible? (Proof, specificity, a number,
+a name, something concrete that the current copy lacks.)*
+
+*4. What's the one sentence in this copy that actually earns the next click?
+(The line that's NOT like every other thing in this space.)*
+
+*Hypothesis: [paste full hypothesis content]*
+---
+
+After receiving skeptic feedback for all 3 hypotheses:
+
+1. **Revise each hypothesis** based on the feedback. Fix the weakest claim.
+   Add the missing proof or specificity. If the skeptic found no earned sentence,
+   rewrite the hook until there is one.
+
+2. **Do not remove the "Confidence level" field** — update it if the skeptic
+   exposed a real gap. A High can become Medium. That's fine. Better to know.
+
+3. **Add a "Skeptic notes" section** to each hypothesis file (2-3 sentences
+   summarizing what changed and why).
+
+The goal: each hypothesis should survive "why would anyone care?" before it
+survives a real audience.
 
 ## Phase 4: Assumption Log
 

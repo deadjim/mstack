@@ -22,6 +22,27 @@
 - `/mlaunch` on actual-ai (1234-word README, no CHANGELOG) — all gates pass, 1 subject line trimmed
 - `/mlaunch` on sparse README (6 words) — interactive fallback works, all gates pass
 
+## [0.3.0] - 2026-03-28 — Skeptic Agent + /mdiscover + /mretro with teeth
+
+### Added
+
+- `/mdiscover` — standalone synthetic user research skill. Run before you've
+  decided what to build. Writes `marketing/discovery/{date}/RESEARCH.md` which
+  `/mlaunch`, `/mcmo`, and `/mbrand` read automatically.
+- Skeptic agent in `/mlaunch` Phase 3.5 — adversarial subagent that stress-tests
+  each hypothesis with "why would anyone care?" before output. Forces revision of
+  weak claims and missing proof before the copy ships.
+
+### Changed
+
+- `/mlaunch` now reads `marketing/discovery/` if a fresh brief exists (< 14 days)
+  and skips re-running research. Cache your research with `/mdiscover`, reuse it
+  across multiple `/mlaunch` runs.
+- `/mretro` fully implemented with a real data contract: structured intake for
+  GitHub signals, UTM/referrer data, engagement signals, and qualitative feedback.
+  Scores assumptions CONFIRMED / REFUTED / UNCLEAR against actual data, not gut
+  feel. Appends verdicts back to `ASSUMPTIONS.md` for a living assumption log.
+
 ## [0.2.0] - 2026-03-28 — Research-First Positioning
 
 Major redesign of /mlaunch based on feedback: confident output for a zero-user

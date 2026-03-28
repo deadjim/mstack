@@ -6,7 +6,8 @@ ad writer.
 
 ## Available Skills
 
-- `/mlaunch` — generate a complete launch campaign from your repo
+- `/mdiscover` — synthetic user research before you've decided what to build
+- `/mlaunch` — generate a complete launch campaign from your repo (reads /mdiscover output)
 - `/mbrand` — infer brand voice, write `marketing/BRAND.md`
 - `/mcmo` — one-page positioning and channel strategy
 - `/mcopy` — rewrite any file with brand voice
@@ -14,7 +15,7 @@ ad writer.
 - `/mads` — generate ad copy variants
 - `/mseo` — SEO audit from URL or markdown
 - `/maudit` — full marketing gap analysis
-- `/mretro` — weekly marketing retrospective
+- `/mretro` — score marketing assumptions against real signal after launch
 
 ## Marketing Principles
 
