@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+set -e
+
+SKILL_DIR="$(cd "$(dirname "$0")" && pwd)"
+SKILLS_DIR="$HOME/.claude/skills"
+MSTACK_GLOBAL="$HOME/.mstack"
+
+echo "Setting up mstack..."
+
+# Create global state dir
+mkdir -p "$MSTACK_GLOBAL"
+
+# Link skills into ~/.claude/skills/
+mkdir -p "$SKILLS_DIR"
+
+for skill in mlaunch mbrand mcmo mcopy memail mads mseo maudit mretro; do
+  SKILL_PATH="$SKILL_DIR/$skill"
+  if [ -d "$SKILL_PATH" ]; then
+    LINK="$SKILLS_DIR/$skill"
+    [ -L "$LINK" ] && rm "$LINK"
+    ln -sf "$SKILL_PATH" "$LINK"
+    echo "  linked: $skill"
+  fi
+done
+
+# Link CLAUDE.md
+[ -L "$SKILLS_DIR/mstack-claude.md" ] && rm "$SKILLS_DIR/mstack-claude.md"
+ln -sf "$SKILL_DIR/CLAUDE.md" "$SKILLS_DIR/mstack-claude.md"
+
+echo ""
+echo "mstack ready."
+echo "Available: /mlaunch /mbrand /mcmo /mcopy /memail /mads /mseo /maudit /mretro"
+echo ""
+echo "Start with: /mlaunch"
