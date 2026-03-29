@@ -29,6 +29,11 @@
 - `/mdiscover` — standalone synthetic user research skill. Run before you've
   decided what to build. Writes `marketing/discovery/{date}/RESEARCH.md` which
   `/mlaunch`, `/mcmo`, and `/mbrand` read automatically.
+- `/mcmo` — fully implemented CMO office hours skill. Interview-first: asks 6
+  forcing questions before writing a word of copy. Pushes on vagueness, names
+  common failure modes, and produces a one-page positioning brief with ICP,
+  wedge, competitive context, channel strategy, and a concrete first action.
+  Reads `/mdiscover` output if present.
 - Skeptic agent in `/mlaunch` Phase 3.5 — adversarial subagent that stress-tests
   each hypothesis with "why would anyone care?" before output. Forces revision of
   weak claims and missing proof before the copy ships.
