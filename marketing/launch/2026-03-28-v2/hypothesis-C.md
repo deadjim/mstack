@@ -7,7 +7,7 @@
 
 **Wedge:** Open source, MIT, $0.02 per run. No subscription, no billing surprises, no lock-in. Fork it if you want. The output is better because it does research first instead of filling templates.
 
-**Hook:** Jasper charged someone $936 for service they never used. mstack costs $0.02.
+**Hook:** Jasper charged someone $936 for service they never used. GTMstack costs $0.02.
 
 **Confidence level:** Medium
 **Evidence from research:** Jasper and Copy.ai have extensive billing abuse complaints on Trustpilot. "SCAMMERS They will charge you with no way of unsubscribing." This is a real and widespread pain point. However — these users may not be technical founders. They may be non-technical marketers who won't install a CLI tool.
@@ -18,31 +18,31 @@
 ## Hero copy
 
 ### $0.02 per run. No subscription. No billing surprises.
-#### mstack is an open source marketing team for Claude Code — everything Jasper promised, without the $936 cancellation horror story.
+#### GTMstack is an open source marketing team for Claude Code — everything Jasper promised, without the $936 cancellation horror story.
 
 **Research before templates**
-Jasper fills templates. mstack scrapes Reddit, HN, and competitor reviews to understand how real people describe your problem space — then writes copy in their language.
+Jasper fills templates. GTMstack scrapes Reddit, HN, and competitor reviews to understand how real people describe your problem space — then writes copy in their language.
 
 **3 hypotheses, not 1 campaign**
-You don't know yet which audience hurts most. mstack generates 3 different campaigns to test cheap in parallel. Jasper generates one generic thing and calls it done.
+You don't know yet which audience hurts most. GTMstack generates 3 different campaigns to test cheap in parallel. Jasper generates one generic thing and calls it done.
 
 **MIT licensed. Fork it.**
 No lock-in. No auto-renewal. No support ticket gaslighting. The code is public. The pricing is one Claude API call per command.
 
-**Install mstack** — `git clone https://github.com/deadjim/mstack.git ~/.claude/skills/mstack && ./setup`
+**Install GTMstack** — `git clone https://github.com/deadjim/GTMstack.git ~/.claude/skills/GTMstack && ./setup`
 
 ---
 
 ## Email subject lines
 - Subject: Cancelled Jasper? There's a better way.
-- Subject: mstack: $0.02/run, MIT licensed, no billing traps
+- Subject: GTMstack: $0.02/run, MIT licensed, no billing traps
 - Subject: Open source Jasper alternative for Claude Code
 Preview: Research-first AI marketing. No subscriptions, no lock-in, no surprises.
 
 ---
 
 ## Tweet hook
-Jasper: $936/year, cookie-cutter output, nightmare to cancel. mstack: $0.02/run, open source, does user research before it writes a word. github.com/deadjim/mstack
+Jasper: $936/year, cookie-cutter output, nightmare to cancel. GTMstack: $0.02/run, open source, does user research before it writes a word. github.com/deadjim/GTMstack
 
 ---
 

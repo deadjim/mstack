@@ -1,4 +1,4 @@
-# Marketing Assumptions — mstack — 2026-03-28
+# Marketing Assumptions — GTMstack — 2026-03-28
 
 These are the beliefs this launch is betting on. Run `/mretro` after 2 weeks to score each one.
 
@@ -9,7 +9,7 @@ These are the beliefs this launch is betting on. Run `/mretro` after 2 weeks to 
       Test: Check GitHub star-to-issue ratio. Issues from post-traction founders = A1 wrong.
 
 - [ ] **A2:** The user is already comfortable with CLI tools (can run `git clone` and `./setup` without friction).
-      Evidence: gstack has this audience; mstack targets the same community.
+      Evidence: gstack has this audience; GTMstack targets the same community.
       Test: Any "how do I install this?" issues = friction at the install step = A2 wrong or onboarding needs work.
 
 - [ ] **A3:** The user does their own marketing (no marketing hire or co-founder).
@@ -37,7 +37,7 @@ These are the beliefs this launch is betting on. Run `/mretro` after 2 weeks to 
       Test: Stars and installs in the first week. Baseline: 10+ stars from one post = confirmed.
 
 - [ ] **C2:** HN Show HH is a viable second channel (not first — timing matters).
-      Evidence: mstack is technical, open source, solves a real developer problem. HN reward these.
+      Evidence: GTMstack is technical, open source, solves a real developer problem. HN reward these.
       Test: Front page = confirmed. <20 upvotes in first hour = wrong day/time, retry.
 
 - [ ] **C3:** Hypothesis A (the crickets problem) will outperform B and C on the IH/Reddit channel.
@@ -57,10 +57,10 @@ These are the beliefs this launch is betting on. Run `/mretro` after 2 weeks to 
 ## Competitive assumptions
 
 - [ ] **E1:** "Jasper refugee" (Hypothesis C) is a smaller audience than "crickets founder" (Hypothesis A) for this product.
-      Evidence: Jasper users skew non-technical; mstack requires CLI comfort. The overlap may be thin.
+      Evidence: Jasper users skew non-technical; GTMstack requires CLI comfort. The overlap may be thin.
       Test: If Hypothesis C generates more engagement than A in the first week, E1 is wrong — pivot messaging.
 
-- [ ] **E2:** The research-first approach (Phase 2 of /mlaunch) is what makes mstack meaningfully different — not just the CLI interface.
+- [ ] **E2:** The research-first approach (Phase 2 of /mlaunch) is what makes GTMstack meaningfully different — not just the CLI interface.
       Evidence: Multiple "devs who hate marketing" tools exist. The gap is the approach, not the interface.
       Test: Do users mention RESEARCH.md or the hypothesis framework in reviews/discussions? If they only talk about "terminal-native," E2 is wrong and the interface is the real wedge.
 

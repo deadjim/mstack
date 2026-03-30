@@ -1,4 +1,4 @@
-# Research Brief — mstack — 2026-03-28
+# Research Brief — GTMstack — 2026-03-28
 
 ## Real user language (direct quotes)
 
@@ -27,7 +27,7 @@
 - "Any marketing engagement must feel genuine; developers detect and reject thinly veiled promotional content."
 - Developers discover on GitHub, Reddit, HN — not through paid ads or email.
 
-**Interesting signal:** Marketers are already using Claude Code for marketing tasks (MKT1 newsletter documents this). mstack standardizes what they're improvising.
+**Interesting signal:** Marketers are already using Claude Code for marketing tasks (MKT1 newsletter documents this). GTMstack standardizes what they're improvising.
 
 ## Current workarounds
 
@@ -66,7 +66,7 @@ The gap: **research-first, terminal-native, hypothesis-testing for zero-user pro
 
 - "We ship to the sound of crickets" — use or riff on this
 - "Building feels like progress. Selling feels like rejection." — true and quotable
-- "No one knows how it helps them" — what mstack fixes
+- "No one knows how it helps them" — what GTMstack fixes
 - "Devs who hate marketing" — category language already established
 
 ## Signals about who hurts most
@@ -76,4 +76,4 @@ Not growth engineers. Not teams. The solo founder who shipped something good and
 nothing — that's the person most desperate for a different approach.
 
 Second signal: marketers already using Claude Code informally. They're improvising;
-mstack gives them a standard.
+GTMstack gives them a standard.

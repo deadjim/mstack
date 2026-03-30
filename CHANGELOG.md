@@ -18,7 +18,7 @@
 
 ### Tested
 
-- `/mlaunch` on mstack itself (338-word README) — all quality gates pass
+- `/mlaunch` on GTMstack itself (338-word README) — all quality gates pass
 - `/mlaunch` on actual-ai (1234-word README, no CHANGELOG) — all gates pass, 1 subject line trimmed
 - `/mlaunch` on sparse README (6 words) — interactive fallback works, all gates pass
 

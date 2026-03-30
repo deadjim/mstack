@@ -3,12 +3,12 @@ set -e
 
 SKILL_DIR="$(cd "$(dirname "$0")" && pwd)"
 SKILLS_DIR="$HOME/.claude/skills"
-MSTACK_GLOBAL="$HOME/.mstack"
+GTMSTACK_GLOBAL="$HOME/.GTMstack"
 
-echo "Setting up mstack..."
+echo "Setting up GTMstack..."
 
 # Create global state dir
-mkdir -p "$MSTACK_GLOBAL"
+mkdir -p "$GTMSTACK_GLOBAL"
 
 # Link skills into ~/.claude/skills/
 mkdir -p "$SKILLS_DIR"
@@ -24,11 +24,11 @@ for skill in mlaunch mbrand mcmo mcopy memail mads mseo maudit mretro; do
 done
 
 # Link CLAUDE.md
-[ -L "$SKILLS_DIR/mstack-claude.md" ] && rm "$SKILLS_DIR/mstack-claude.md"
-ln -sf "$SKILL_DIR/CLAUDE.md" "$SKILLS_DIR/mstack-claude.md"
+[ -L "$SKILLS_DIR/gtmstack-claude.md" ] && rm "$SKILLS_DIR/gtmstack-claude.md"
+ln -sf "$SKILL_DIR/CLAUDE.md" "$SKILLS_DIR/gtmstack-claude.md"
 
 echo ""
-echo "mstack ready."
+echo "GTMstack ready."
 echo "Available: /mlaunch /mbrand /mcmo /mcopy /memail /mads /mseo /maudit /mretro"
 echo ""
 echo "Start with: /mlaunch"

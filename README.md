@@ -1,16 +1,16 @@
-# mstack
+# GTMstack
 
 AI marketing team for Claude Code.
 
-gstack gave Claude Code a virtual engineering team. mstack gives it a virtual marketing team — CMO, copywriter, SEO strategist, email marketer, ad writer — all as slash commands in your terminal.
+gstack gave Claude Code a virtual engineering team. GTMstack gives it a virtual marketing team — CMO, copywriter, SEO strategist, email marketer, ad writer — all as slash commands in your terminal.
 
-**The insight:** every existing AI marketing tool is a SaaS dashboard built for marketers. mstack lives in the terminal because it's built for founders who live in the terminal. A `/mlaunch` command run next to `git push` is a fundamentally different product.
+**The insight:** every existing AI marketing tool is a SaaS dashboard built for marketers. GTMstack lives in the terminal because it's built for founders who live in the terminal. A `/mlaunch` command run next to `git push` is a fundamentally different product.
 
 ## Install
 
 ```bash
-git clone --single-branch --depth 1 https://github.com/deadjim/mstack.git \
-  ~/.claude/skills/mstack && cd ~/.claude/skills/mstack && ./setup
+git clone --single-branch --depth 1 https://github.com/deadjim/GTMstack.git \
+  ~/.claude/skills/GTMstack && cd ~/.claude/skills/GTMstack && ./setup
 ```
 
 ## Skills
@@ -49,9 +49,9 @@ Output goes to `marketing/` in your repo. Never overwrites source files.
 
 ## Works great with gstack
 
-mstack and gstack are independent installs that compose naturally:
+GTMstack and gstack are independent installs that compose naturally:
 - Use gstack to build and ship your feature
-- Use mstack to launch it
+- Use GTMstack to launch it
 
 ## Requirements
 

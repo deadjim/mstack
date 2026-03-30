@@ -1,6 +1,6 @@
-# mstack — AI Marketing Team for Claude Code
+# GTMstack — AI Marketing Team for Claude Code
 
-mstack gives Claude Code a virtual marketing team. Same install pattern as gstack,
+GTMstack gives Claude Code a virtual marketing team. Same install pattern as gstack,
 but the specialists are marketers: CMO, copywriter, SEO strategist, email marketer,
 ad writer.
 
@@ -20,7 +20,7 @@ ad writer.
 ## Marketing Principles
 
 - Read `marketing/BRAND.md` before generating any copy (repo-scoped).
-  Fall back to `~/.mstack/BRAND.md` (global). Infer from repo if neither exists.
+  Fall back to `~/.GTMstack/BRAND.md` (global). Infer from repo if neither exists.
 - Specificity beats adjectives. Numbers beat claims.
 - Never use: unlock, revolutionize, game-changer, powerful, seamless, robust,
   comprehensive, leverage, synergy, cutting-edge.
@@ -30,7 +30,7 @@ ad writer.
 ## Context Reading Order
 
 1. `marketing/BRAND.md` (repo-scoped brand voice)
-2. `~/.mstack/BRAND.md` (global brand voice fallback)
+2. `~/.GTMstack/BRAND.md` (global brand voice fallback)
 3. `README.md` — product name (H1), description (first paragraph), target user
 4. `CHANGELOG.md` — latest version entry as "what's new"
 5. Tech stack detection: `package.json`, `go.mod`, `pyproject.toml`

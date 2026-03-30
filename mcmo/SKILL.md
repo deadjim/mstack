@@ -118,7 +118,7 @@ jargon, scope-creep, or feature-listing.
 **Push if:** the answer is > 2 sentences, includes "platform," "ecosystem," or
 "end-to-end solution," or describes future features as if they exist.
 
-**Good answer looks like:** "mstack generates 3 positioning hypotheses for a
+**Good answer looks like:** "GTMstack generates 3 positioning hypotheses for a
 CLI-native developer who doesn't know why their product isn't getting traction."
 
 **Failure modes to name:**

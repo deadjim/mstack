@@ -21,7 +21,7 @@ Let data pick the winner before you scale.
 
 ```bash
 _BRAND_REPO="marketing/BRAND.md"
-_BRAND_GLOBAL="$HOME/.mstack/BRAND.md"
+_BRAND_GLOBAL="$HOME/.GTMstack/BRAND.md"
 _README="README.md"
 _CHANGELOG="CHANGELOG.md"
 _DATE=$(date +%Y-%m-%d)
